@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1574849118 source:/home/fabrice/projects/CodeBlocks/Study_Project/New-Proj-again/tableau.c
+
+1574865300 source:/home/fabrice/projects/CodeBlocks/Study_Project/New-Proj-again/main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"main.h"
+	"tableau.h"
+
+1574860403 /home/fabrice/projects/CodeBlocks/Study_Project/New-Proj-again/main.h
+
+1574858497 /home/fabrice/projects/CodeBlocks/Study_Project/New-Proj-again/tableau.h
+
