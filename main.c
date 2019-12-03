@@ -88,13 +88,10 @@ int main(int argc, char *argv[])
             fscanf(motsMystere, "%s", leMotMystere);
         }
         fclose(motsMystere);
-        printf("ID dans fichier = %d \n", ElementMystere);
-        printf("Mot Mystere tire = %s \n", leMotMystere);
         tailleDuMot = strlen(leMotMystere);
         printf("longueur du mot = %d \n", tailleDuMot);
         // Allocation dynamique de memoire pour la recherche du joueur
         char* lettresDuMot = NULL;
-        printf("\nAllocztion dynamiquye de memoire, %d cases\n", tailleDuMot);
         lettresDuMot = malloc(tailleDuMot *sizeof(char));
         if (lettresDuMot == NULL)
         {
@@ -102,49 +99,59 @@ int main(int argc, char *argv[])
             exit(0);
         }
         // initialiser le tableau avec des *
+        essaisRestants = 10;
         printf("Devinez quel est le mot Mystere : ! \n");
+        printf("Vous disposez de %d tentatives : ! \n\n", essaisRestants);
         for (int i=0; i<tailleDuMot; i++)
         {
             lettresDuMot[i]= '*';
         }
-        for (int i=tailleDuMot; i<=sizeof(tailleDuMot); i++)
+        for (int i=tailleDuMot-1; i<=sizeof(tailleDuMot); i++)
         {
             lettresDuMot[i]= ' ';
         }
-        printf("%s\n", lettresDuMot);
-        essaisRestants = 10;
+        printf("%s\n\n", lettresDuMot);
         lettreRestantes = tailleDuMot;
         char proposition = ' ';
         while (essaisRestants && lettreRestantes)
         {
-            printf("Proposez une lettre MAJUSCULE!");
+            printf("Il vous reste %d essais !\n", essaisRestants);
+            printf("Proposez une lettre MAJUSCULE!\n");
             scanf("%s", &proposition);
             // recherche lettre dans mot et remplacement dans tableau
+            int lettre_trouvee = 0;
             for (int i=0; i<tailleDuMot; i++)
             {
-                if (leMotMystere[i] == proposition)
+                if ((leMotMystere[i] == proposition) && (lettresDuMot[i] != proposition))
                 {
+
                     lettresDuMot[i] = proposition;
                     lettreRestantes--;
+                    lettre_trouvee = 1;
                 }
+            }
+            if (!lettre_trouvee)
+            {
+                essaisRestants--;
             }
             printf("%s\n", lettresDuMot);
             if (lettreRestantes && !essaisRestants)
             {
-                printf("Désolé vous avez perdu !\n");
+                printf("\nDésolé vous avez perdu !\n");
                 printf("Le mot mystere était \n");
                 printf("%s\n", lettresDuMot);
             }
             if (!lettreRestantes && essaisRestants)
             {
-                printf("Vous avez gagné !\n");
+                printf("\nBravo, Vous avez gagné !\n");
                 printf("Le mot mystere était bien\n");
                 printf("%s\n", leMotMystere);
             }
         }
         free(lettresDuMot);
-        printf("Desirez vous faire une autre partie O/N?");
+        printf("\nDesirez vous faire une autre partie O/N?");
         scanf("%s", &proposition);
+        printf("\n");
         if(proposition == 'N')
             {
                 printf("Merci d'avoir jouer à ce jeu, Au revoir !\n");
