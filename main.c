@@ -26,14 +26,14 @@ void initialiserUserDataComposants(Coordonnees *inputdata);
 
 int main(int argc, char *argv[])
 {
-
-
     // Le jeu du Pendu
-    // Créer 5 fichiers avec 1 mot dans chaque fichier
+    // Créer 1 fichier contenant les mots mystère, un mot par ligne
+	// déclarer les variables pour lagestion du fichier
+	// Mesurer la taille du fichier dictionnaire
     // Tirer un nombre aleatoire compris entre 1 et 5, x
+	// Prendre le bon mot dans le fichier
+	// Déterminer la taille du mot
     // Initialiser le compteur d'essai à nb Max_essai = 10
-    // Le mot à deviner sera celui contenu dans le fichier mot_mystere_x.txt
-    // Lire le contenu du fichier et en deduire la taille du mot, Y
     // Créer un tableau dynamique de Y valeurs pour le stockage des proposition du joueur
     // Afficher Devinez le mot mystere : suivi par Y etoiles séparées par un espace
     // Demander au joueur de proposer une lettre MAJUSCULE, L
@@ -49,7 +49,108 @@ int main(int argc, char *argv[])
 
 
     printf("Le jeu du pendu !\n");
+    FILE *motsMystere = NULL;
+    char leMotMystere[30];
+    int ElementMystere = 0;
+    int tailleDuMot = 0;
+    int essaisRestants = 0;
+    int lettreRestantes = 0;
+    // ouverture du fichier et controle succes
+    motsMystere = fopen("MotMystere_1.txt", "r");
+    if (!motsMystere)
+    {
+        printf("\aERREUR: Impossible d'ouvrir le fichier:\n");
+        exit(-1);
+    }
+    // determination du nombre d'éléments du dictionnaire
+    int c;
+    int nLignes = 0;
+    while((c=fgetc(motsMystere)) != EOF)
+    {
+        if(c=='\n')
+            nLignes++;
+    }
+    nLignes++;
+    printf("il y a %d elements dans le dictionnaire\n", nLignes);
+    fclose(motsMystere);
 
+    // Tirage aléatoire d'un nombre
+    // tirage au sort du nombre mystere
+    int jeuEnCours = 1;
+    while (jeuEnCours)
+    {
+        srand(time(NULL));
+        ElementMystere = (rand() % (nLignes - 1 + 1)) + 1;
+        // Lecture du mot mystere d'indice le nombre aleatoire
+        motsMystere = fopen("MotMystere_1.txt", "r");
+        for (int i=1; i<ElementMystere+1; i++)
+        {
+            fscanf(motsMystere, "%s", leMotMystere);
+        }
+        fclose(motsMystere);
+        printf("ID dans fichier = %d \n", ElementMystere);
+        printf("Mot Mystere tire = %s \n", leMotMystere);
+        tailleDuMot = strlen(leMotMystere);
+        printf("longueur du mot = %d \n", tailleDuMot);
+        // Allocation dynamique de memoire pour la recherche du joueur
+        char* lettresDuMot = NULL;
+        printf("\nAllocztion dynamiquye de memoire, %d cases\n", tailleDuMot);
+        lettresDuMot = malloc(tailleDuMot *sizeof(char));
+        if (lettresDuMot == NULL)
+        {
+            printf("Probleme d'allocation de memoire !!\n");
+            exit(0);
+        }
+        // initialiser le tableau avec des *
+        printf("Devinez quel est le mot Mystere : ! \n");
+        for (int i=0; i<tailleDuMot; i++)
+        {
+            lettresDuMot[i]= '*';
+        }
+        for (int i=tailleDuMot; i<=sizeof(tailleDuMot); i++)
+        {
+            lettresDuMot[i]= ' ';
+        }
+        printf("%s\n", lettresDuMot);
+        essaisRestants = 10;
+        lettreRestantes = tailleDuMot;
+        char proposition = ' ';
+        while (essaisRestants && lettreRestantes)
+        {
+            printf("Proposez une lettre MAJUSCULE!");
+            scanf("%s", &proposition);
+            // recherche lettre dans mot et remplacement dans tableau
+            for (int i=0; i<tailleDuMot; i++)
+            {
+                if (leMotMystere[i] == proposition)
+                {
+                    lettresDuMot[i] = proposition;
+                    lettreRestantes--;
+                }
+            }
+            printf("%s\n", lettresDuMot);
+            if (lettreRestantes && !essaisRestants)
+            {
+                printf("Désolé vous avez perdu !\n");
+                printf("Le mot mystere était \n");
+                printf("%s\n", lettresDuMot);
+            }
+            if (!lettreRestantes && essaisRestants)
+            {
+                printf("Vous avez gagné !\n");
+                printf("Le mot mystere était bien\n");
+                printf("%s\n", leMotMystere);
+            }
+        }
+        free(lettresDuMot);
+        printf("Desirez vous faire une autre partie O/N?");
+        scanf("%s", &proposition);
+        if(proposition == 'N')
+            {
+                printf("Merci d'avoir jouer à ce jeu, Au revoir !\n");
+                jeuEnCours = 0;
+            }
+    }
 
 
     // Allocation de mémoire dynamique pour gérer un tableau
@@ -60,7 +161,7 @@ int main(int argc, char *argv[])
     printf("\nAllocztion dynamiquye de memoire\n");
     printf("Combien avez-vous de données à saisir  ?\n");
     scanf("%d", &nombreData);
-    Data = malloc(nombreData *sizeof(int16_t));
+    Data = malloc(nombreData *sizeof(int));
     if (Data == NULL)
     {
         printf("Probleme d'allocation de memoire !!\n");
