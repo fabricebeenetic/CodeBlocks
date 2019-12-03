@@ -13,6 +13,7 @@ Si la saisie est plus grande que le mystère on affiche, Plus petit !
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 #include "main.h"
 #include "tableau.h"
 
@@ -55,6 +56,7 @@ int main(int argc, char *argv[])
     int tailleDuMot = 0;
     int essaisRestants = 0;
     int lettreRestantes = 0;
+
     // ouverture du fichier et controle succes
     motsMystere = fopen("MotMystere_1.txt", "r");
     if (!motsMystere)
@@ -92,7 +94,7 @@ int main(int argc, char *argv[])
         printf("longueur du mot = %d \n", tailleDuMot);
         // Allocation dynamique de memoire pour la recherche du joueur
         char* lettresDuMot = NULL;
-        lettresDuMot = malloc(tailleDuMot *sizeof(char));
+        lettresDuMot = malloc(tailleDuMot+1 *sizeof(char));
         if (lettresDuMot == NULL)
         {
             printf("Probleme d'allocation de memoire !!\n");
@@ -106,57 +108,129 @@ int main(int argc, char *argv[])
         {
             lettresDuMot[i]= '*';
         }
-        for (int i=tailleDuMot-1; i<=sizeof(tailleDuMot); i++)
-        {
-            lettresDuMot[i]= ' ';
-        }
+        lettresDuMot[tailleDuMot]= '\0';
         printf("%s\n\n", lettresDuMot);
         lettreRestantes = tailleDuMot;
-        char proposition = ' ';
+        char proposition[10];
         while (essaisRestants && lettreRestantes)
         {
             printf("Il vous reste %d essais !\n", essaisRestants);
-            printf("Proposez une lettre MAJUSCULE!\n");
-            scanf("%s", &proposition);
-            // recherche lettre dans mot et remplacement dans tableau
-            int lettre_trouvee = 0;
-            for (int i=0; i<tailleDuMot; i++)
-            {
-                if ((leMotMystere[i] == proposition) && (lettresDuMot[i] != proposition))
-                {
+            printf("Proposez une lettre !\n");
 
-                    lettresDuMot[i] = proposition;
-                    lettreRestantes--;
-                    lettre_trouvee = 1;
+            //fgets (proposition, 1, stdin);
+            if (fgets (proposition, 5, stdin) == NULL)
+            {
+                printf("erreur d'acquisition !\n");
+                // vider le buffer stdin
+                int c = 0;
+                while (c != '\n' && c != EOF)
+                {
+                    c = getchar();
+                }
+                return 0;
+            } else
+            {
+                printf("la saisie %s : ", proposition);
+                // remplacer \n par \0 pour délimiter la fin de la chaine
+                char* Position = NULL;
+                Position = strchr(proposition, '\n');
+                if (Position != NULL)
+                {
+                    *Position = '\0';
+                }
+                else
+                {
+                    // vider le buffer stdin
+                    int c = 0;
+                    while (c != '\n' && c != EOF)
+                    {
+                        c = getchar();
+                    }
+                }
+                // scanf("%s", &proposition);
+                proposition[0] = toupper(proposition[0]);
+                // recherche lettre dans mot et remplacement dans tableau
+                int lettre_trouvee = 0;
+                for (int i=0; i<tailleDuMot; i++)
+                {
+                    if ((leMotMystere[i] == proposition[0]) && (lettresDuMot[i] != proposition[0]))
+                    {
+                        lettresDuMot[i] = proposition[0];
+                        lettreRestantes--;
+                        lettre_trouvee = 1;
+                    }
+                }
+                if (!lettre_trouvee)
+                {
+                    essaisRestants--;
+                }
+                printf("%s\n", lettresDuMot);
+                if (lettreRestantes && !essaisRestants)
+                {
+                    printf("\nDésolé vous avez perdu !\n");
+                    printf("Le mot mystere était \n");
+                    printf("%s\n", leMotMystere);
+                }
+                if (!lettreRestantes && essaisRestants)
+                {
+                    printf("\nBravo, Vous avez gagné !\n");
+                    printf("Le mot mystere était bien\n");
+                    printf("%s\n", leMotMystere);
                 }
             }
-            if (!lettre_trouvee)
-            {
-                essaisRestants--;
-            }
-            printf("%s\n", lettresDuMot);
-            if (lettreRestantes && !essaisRestants)
-            {
-                printf("\nDésolé vous avez perdu !\n");
-                printf("Le mot mystere était \n");
-                printf("%s\n", lettresDuMot);
-            }
-            if (!lettreRestantes && essaisRestants)
-            {
-                printf("\nBravo, Vous avez gagné !\n");
-                printf("Le mot mystere était bien\n");
-                printf("%s\n", leMotMystere);
-            }
+
+        }
+        for (int i=0; i<tailleDuMot; i++)
+        {
+            lettresDuMot[i]= ' ';
         }
         free(lettresDuMot);
-        printf("\nDesirez vous faire une autre partie O/N?");
-        scanf("%s", &proposition);
-        printf("\n");
-        if(proposition == 'N')
+        // vider le buffer stdin
+        int c = 0;
+        while (c != '\n' && c != EOF)
+        {
+            c = getchar();
+        }
+        printf("\nDesirez vous faire une autre partie O/N?\n");
+
+        if (fgets (proposition, 5, stdin) == NULL)
+        {
+            printf("erreur d'acquisition !\n");
+            // vider le buffer stdin
+            int c = 0;
+            while (c != '\n' && c != EOF)
             {
-                printf("Merci d'avoir jouer à ce jeu, Au revoir !\n");
-                jeuEnCours = 0;
+                c = getchar();
             }
+            return 0;
+        } else
+        {
+            proposition[0] = toupper(proposition[0]);
+            // remplacer \n par \0 pour délimiter la fin de la chaine
+            char* Position = NULL;
+            Position = strchr(proposition, '\n');
+            if (Position != NULL)
+            {
+                *Position = '\0';
+            }
+            else
+            {
+                // vider le buffer stdin
+                int c = 0;
+                while (c != '\n' && c != EOF)
+                {
+                    c = getchar();
+                }
+            }
+
+            // scanf("%s", &proposition);
+            printf("\n");
+            if(proposition[0] != 'O')
+                {
+                    printf("Merci d'avoir jouer à ce jeu, Au revoir !\n");
+                    jeuEnCours = 0;
+                }
+        }
     }
 
 
