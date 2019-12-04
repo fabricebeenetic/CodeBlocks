@@ -16,6 +16,7 @@ Si la saisie est plus grande que le mystère on affiche, Plus petit !
 #include <ctype.h>
 #include "main.h"
 #include "tableau.h"
+#include "dico.h"
 
 
 void punition(int nbItteration);
@@ -50,31 +51,17 @@ int main(int argc, char *argv[])
 
 
     printf("Le jeu du pendu !\n");
-    FILE *motsMystere = NULL;
-    char leMotMystere[30];
+
+    char* leMotMystere = NULL;
+    char* ptMystere = NULL;
     int ElementMystere = 0;
     int tailleDuMot = 0;
     int essaisRestants = 0;
     int lettreRestantes = 0;
+    int tailleDico = 0;
 
-    // ouverture du fichier et controle succes
-    motsMystere = fopen("MotMystere_1.txt", "r");
-    if (!motsMystere)
-    {
-        printf("\aERREUR: Impossible d'ouvrir le fichier:\n");
-        exit(-1);
-    }
-    // determination du nombre d'éléments du dictionnaire
-    int c;
-    int nLignes = 0;
-    while((c=fgetc(motsMystere)) != EOF)
-    {
-        if(c=='\n')
-            nLignes++;
-    }
-    nLignes++;
-    printf("il y a %d elements dans le dictionnaire\n", nLignes);
-    fclose(motsMystere);
+    tailleDico = litTailleDico("MotMystere_1.txt");
+    printf("resultat littailledico %d \n", tailleDico);
 
     // Tirage aléatoire d'un nombre
     // tirage au sort du nombre mystere
@@ -82,17 +69,29 @@ int main(int argc, char *argv[])
     while (jeuEnCours)
     {
         srand(time(NULL));
-        ElementMystere = (rand() % (nLignes - 1 + 1)) + 1;
+        ElementMystere = (rand() % (tailleDico - 1 + 1)) + 1;
+
         // Lecture du mot mystere d'indice le nombre aleatoire
-        motsMystere = fopen("MotMystere_1.txt", "r");
-        for (int i=1; i<ElementMystere+1; i++)
+        leMotMystere = malloc(tailleDuMot+1 *sizeof(char));
+        if (leMotMystere == NULL)
         {
-            fscanf(motsMystere, "%s", leMotMystere);
+            printf("Probleme d'allocation de memoire !!\n");
+            exit(0);
         }
-        fclose(motsMystere);
+        ptMystere = litMot("MotMystere_1.txt", ElementMystere);
+        for (int i=0; i<ElementMystere; i++)
+        {
+            leMotMystere[i] = *ptMystere;
+            ptMystere++;
+        }
+
+        //printf("mot mystere %s\n", ptLeMotMystere);
+        printf("le mot mystere %s\n", leMotMystere);
+
         tailleDuMot = strlen(leMotMystere);
         printf("longueur du mot = %d \n", tailleDuMot);
         // Allocation dynamique de memoire pour la recherche du joueur
+
         char* lettresDuMot = NULL;
         lettresDuMot = malloc(tailleDuMot+1 *sizeof(char));
         if (lettresDuMot == NULL)
@@ -121,16 +120,10 @@ int main(int argc, char *argv[])
             if (fgets (proposition, 5, stdin) == NULL)
             {
                 printf("erreur d'acquisition !\n");
-                // vider le buffer stdin
-                int c = 0;
-                while (c != '\n' && c != EOF)
-                {
-                    c = getchar();
-                }
+                viderLeBuffer();
                 return 0;
             } else
             {
-                printf("la saisie %s : ", proposition);
                 // remplacer \n par \0 pour délimiter la fin de la chaine
                 char* Position = NULL;
                 Position = strchr(proposition, '\n');
@@ -140,12 +133,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    // vider le buffer stdin
-                    int c = 0;
-                    while (c != '\n' && c != EOF)
-                    {
-                        c = getchar();
-                    }
+                    viderLeBuffer();
                 }
                 // scanf("%s", &proposition);
                 proposition[0] = toupper(proposition[0]);
@@ -185,23 +173,13 @@ int main(int argc, char *argv[])
             lettresDuMot[i]= ' ';
         }
         free(lettresDuMot);
-        // vider le buffer stdin
-        int c = 0;
-        while (c != '\n' && c != EOF)
-        {
-            c = getchar();
-        }
+        viderLeBuffer();
         printf("\nDesirez vous faire une autre partie O/N?\n");
 
         if (fgets (proposition, 5, stdin) == NULL)
         {
             printf("erreur d'acquisition !\n");
-            // vider le buffer stdin
-            int c = 0;
-            while (c != '\n' && c != EOF)
-            {
-                c = getchar();
-            }
+            viderLeBuffer();
             return 0;
         } else
         {
@@ -215,12 +193,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                // vider le buffer stdin
-                int c = 0;
-                while (c != '\n' && c != EOF)
-                {
-                    c = getchar();
-                }
+                viderLeBuffer();
             }
 
             // scanf("%s", &proposition);
