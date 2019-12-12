@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1575556541 source:/home/fabrice/projects/CodeBlocks/testsdl/main.cpp
+	<cstdlib>
+	<stdlib.h>
+	<SDL/SDL.h>
+
