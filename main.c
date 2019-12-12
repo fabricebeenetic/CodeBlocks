@@ -17,6 +17,7 @@ Si la saisie est plus grande que le mystère on affiche, Plus petit !
 #include "main.h"
 #include "tableau.h"
 #include "dico.h"
+#include "liste.h"
 
 
 void punition(int nbItteration);
@@ -28,6 +29,21 @@ void initialiserUserDataComposants(Coordonnees *inputdata);
 
 int main(int argc, char *argv[])
 {
+    // Gestion des listes chainees
+    // Creation d'une liste
+    Liste* Maliste = initialisation(51);
+    insertion(Maliste, 3);
+    insertion(Maliste, 25);
+    insertion(Maliste, 96);
+    afficherListe(Maliste);
+    suppressionPremier(Maliste);
+    insertion(Maliste, 254);
+    afficherListe(Maliste);
+    supprimerItemN(Maliste,2);
+    afficherListe(Maliste);
+    supprimerItemN(Maliste,2);
+    afficherListe(Maliste);
+
     // Le jeu du Pendu
     // Créer 1 fichier contenant les mots mystère, un mot par ligne
 	// déclarer les variables pour lagestion du fichier
