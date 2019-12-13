@@ -22,17 +22,12 @@ Si la saisie est plus grande que le mystère on affiche, Plus petit !
 #include "file.h"
 
 
-void punition(int nbItteration);
-void conversionFrancEuro(int *valeur);
-void conversionEuroFranc(int *valeur);
-void initialiserUserData(Coordonnees *inputdata);
-void initialiserUserDataComposants(Coordonnees *inputdata);
-
-
 int main(int argc, char *argv[])
 {
+
     // Gestion de FIFO
     File* mafile = createFile();
+
     enfiler(mafile, 26);
     enfiler(mafile, 5);
     enfiler(mafile, 356);

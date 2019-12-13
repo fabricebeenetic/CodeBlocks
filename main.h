@@ -22,4 +22,10 @@ struct Coordonnees{
     int  sexe;
 };
 
+void punition(int nbItteration);
+void conversionFrancEuro(int *valeur);
+void conversionEuroFranc(int *valeur);
+void initialiserUserData(Coordonnees *inputdata);
+void initialiserUserDataComposants(Coordonnees *inputdata);
+
 #endif // MAIN_H_INCLUDED

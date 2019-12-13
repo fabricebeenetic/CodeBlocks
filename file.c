@@ -17,6 +17,7 @@ File* createFile()
 void enfiler(File* maFile, int valeur)
 {
     Element* aAjouter = malloc(sizeof(Element));
+
     if ( maFile == NULL || aAjouter == NULL)
     {
         exit(EXIT_FAILURE);
@@ -29,10 +30,10 @@ void enfiler(File* maFile, int valeur)
     } else
     {
         Element* index = maFile->premier;
-        do
+        while (index->suivant != NULL)
         {
             index = index->suivant;
-        }while (index->suivant != NULL);
+        };
         index->suivant = aAjouter;
     }
     printf("\nAjoute à la file : %d", valeur);

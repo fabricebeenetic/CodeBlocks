@@ -25,6 +25,7 @@ void empiler(pile* laPile, int nombre)
     newElement->Value = nombre;
     newElement->suivant = laPile->premier;
     laPile->premier = newElement;
+    printf("\nAjoute à la pile : %d", nombre);
 }
 
 int depiler(pile* laPile)
