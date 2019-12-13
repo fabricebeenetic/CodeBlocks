@@ -18,6 +18,8 @@ Si la saisie est plus grande que le mystère on affiche, Plus petit !
 #include "tableau.h"
 #include "dico.h"
 #include "liste.h"
+#include "pile.h"
+#include "file.h"
 
 
 void punition(int nbItteration);
@@ -29,6 +31,34 @@ void initialiserUserDataComposants(Coordonnees *inputdata);
 
 int main(int argc, char *argv[])
 {
+    // Gestion de FIFO
+    File* mafile = createFile();
+    enfiler(mafile, 26);
+    enfiler(mafile, 5);
+    enfiler(mafile, 356);
+    enfiler(mafile, 8);
+    enfiler(mafile, 54);
+    afficherFile(mafile);
+    defiler(mafile);
+    afficherFile(mafile);
+    defiler(mafile);
+    afficherFile(mafile);
+
+    // Gestion de pile
+    //initialisation()
+    pile* maPile = createHeap();
+    empiler(maPile, 5);
+    empiler(maPile, 67);
+    empiler(maPile, 43);
+    empiler(maPile, 125);
+    empiler(maPile, 98);
+    empiler(maPile, 126);
+    afficherPile(maPile);
+    printf("depiler un élément %d \n", depiler(maPile));
+    afficherPile(maPile);
+    printf("depiler un élément %d \n", depiler(maPile));
+    afficherPile(maPile);
+
     // Gestion des listes chainees
     // Creation d'une liste
     Liste* Maliste = initialisation(51);

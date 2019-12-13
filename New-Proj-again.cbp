@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="dico.h" />
+		<Unit filename="file.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="file.h" />
 		<Unit filename="liste.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -43,6 +47,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.h" />
+		<Unit filename="pile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pile.h" />
 		<Unit filename="tableau.c">
 			<Option compilerVar="CC" />
 		</Unit>

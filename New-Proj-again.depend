@@ -27,7 +27,7 @@
 
 1575046073 c:\users\ftocc\onedrive\documents\github\codeblocks\tableau.h
 
-1576082445 source:/home/fabrice/projects/CodeBlocks/main.c
+1576145936 source:/home/fabrice/projects/CodeBlocks/main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -37,6 +37,8 @@
 	"tableau.h"
 	"dico.h"
 	"liste.h"
+	"pile.h"
+	"file.h"
 
 1575362166 /home/fabrice/projects/CodeBlocks/main.h
 
@@ -50,10 +52,26 @@
 
 1575460107 /home/fabrice/projects/CodeBlocks/dico.h
 
-1576084787 source:/home/fabrice/projects/CodeBlocks/liste.c
+1576084872 source:/home/fabrice/projects/CodeBlocks/liste.c
 	<stdlib.h>
 	<stdio.h>
 	"liste.h"
 
 1576082520 /home/fabrice/projects/CodeBlocks/liste.h
+
+1576143860 source:/home/fabrice/projects/CodeBlocks/pile.c
+	<stdlib.h>
+	<stdio.h>
+	"pile.h"
+
+1576143793 /home/fabrice/projects/CodeBlocks/pile.h
+	"liste.h"
+
+1576145924 source:/home/fabrice/projects/CodeBlocks/file.c
+	<stdio.h>
+	<stdlib.h>
+	"file.h"
+
+1576145973 /home/fabrice/projects/CodeBlocks/file.h
+	"liste.h"
 
